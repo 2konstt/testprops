@@ -15,7 +15,7 @@ class App extends React.Component {
   }
 
   startGame = () => {
-    var newNum = Math.floor(Math.random() * ((Math.pow(10, this.state.level+1)-1)-Math.pow(10, this.state.level))) + Math.pow(10, this.state.level)
+    var newNum = Math.floor(Math.random() * ((Math.pow(10, this.state.level+1)-1)-Math.pow(10, this.state.level)) + Math.pow(10, this.state.level))
     this.setState({
       num: newNum,
       gameStart: true,
