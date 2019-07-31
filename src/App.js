@@ -14,7 +14,7 @@ class App extends React.Component {
     }
   }
 
-  getRandomMath = () => {
+  startGame = () => {
     var newNum = Math.floor(Math.random() * ((Math.pow(10, this.state.level+1)-1)-Math.pow(10, this.state.level))) + Math.pow(10, this.state.level)
     this.setState({
       num: newNum,
@@ -30,7 +30,6 @@ class App extends React.Component {
           count: 5,
           timerON: false
         })
-  
       } else {
         this.setState({
         count: count1-1,
@@ -50,7 +49,7 @@ class App extends React.Component {
     return (
       <div>
         {
-          !this.state.gameStart ? <button onClick={this.getRandomMath}>START THE GAME</button> :
+          !this.state.gameStart ? <button onClick={this.startGame}>START THE GAME</button> :
         
         
           <Card 
@@ -63,7 +62,7 @@ class App extends React.Component {
                             level: lvlUp, 
                             input: ''
                             })
-                this.getRandomMath()
+                this.startGame()
               } else {
                 this.setState({level: 0, gameStart: false})
               }
