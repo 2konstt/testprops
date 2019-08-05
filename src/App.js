@@ -8,19 +8,21 @@ class App extends React.Component {
     this.state = {
       count: 5,
       level: 0,
+      lastLvl: 0,
       num: 0,
+      input: '',
       gameStart: false,
       timerON: false
     }
   }
 
-  startGame = () => {
-    var newNum = Math.floor(Math.random() * ((Math.pow(10, this.state.level+1)-1)-Math.pow(10, this.state.level)) + Math.pow(10, this.state.level))
+  startGame = (lvl = 0) => {
+    var newNum = Math.floor(Math.random() * ((Math.pow(10, lvl + 1) - 1) - Math.pow(10, lvl)) + Math.pow(10, lvl))
     this.setState({
       num: newNum,
       gameStart: true,
       timerON: true
-    })
+    });
 
     var timer = setInterval(() => {
       var count1 = this.state.count;
@@ -41,7 +43,21 @@ class App extends React.Component {
 
   }
 
-    
+lvlUp = () =>{
+  var lvlUp = this.state.level + 1
+  var lastLvl = this.state.level
+  if (this.state.num == this.state.input) {
+    this.setState({
+                level: lvlUp, 
+                lastlvl: lastLvl,
+                })
+    if (this.state.level != this.state.lastlvl) {
+      this.startGame(lvlUp)
+    }
+  } else {
+    this.setState({level: 0, gameStart: false})
+  }
+} 
    
   
   
@@ -49,24 +65,13 @@ class App extends React.Component {
     return (
       <div>
         {
-          !this.state.gameStart ? <button onClick={this.startGame}>START THE GAME</button> :
+          !this.state.gameStart ? <button onClick={()=>this.startGame(0)}>START THE GAME</button> :
         
         
           <Card 
             num={this.state.num}
             level={this.state.level} 
-            func={()=>{
-              if (this.state.num == this.state.input) {
-                var lvlUp = this.state.level + 1
-                this.setState({
-                            level: lvlUp, 
-                            input: ''
-                            })
-                this.startGame()
-              } else {
-                this.setState({level: 0, gameStart: false})
-              }
-            }}
+            func={this.lvlUp}
             timerON={this.state.timerON}
             count={this.state.count}
             changefunc={(e)=>{
@@ -82,19 +87,22 @@ class App extends React.Component {
 }
 
 function Card(props){
+  
   return <div>
-          <h1>ЗАПОМНИ ЧИСЛО!</h1>
+          {
+            props.timerON ? <h1>ЗАПОМНИ ЧИСЛО!</h1> : <h1>НАПИШИ ЧИСЛО:</h1>
+          }
           {
             !props.timerON ? <p> </p> : <h3> {props.count} секунд</h3>
           }
           {
-            props.timerON ? <h1>{props.num}</h1> : <input onChange={props.changefunc} />
+            props.timerON ? <h1 id='prote'>{props.num}</h1> : <input onChange={props.changefunc} />
           }
           {
-            props.timerON ? <p> </p> : <button onClick={props.func}>CLICK</button>
+            props.timerON ? <p> </p> : <button onClick={props.func}>CHECK</button>
           }
           
-          <p>LEVEL: {props.level}</p>
+          <p>LEVEL: {props.level+1}</p>
         </div>
 }
 
